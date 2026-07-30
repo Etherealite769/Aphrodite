@@ -1060,12 +1060,12 @@
     ctx.fillRect(leftNeonX, neonY, neonBarW, neonBarH);
     ctx.fillRect(rightNeonX, neonY, neonBarW, neonBarH);
 
-    const speakerW = 110;
-    const speakerH = 220;
+    const speakerW = Math.min(110, Math.max(50, w * 0.15));
+    const speakerH = speakerW * 2.0;
     const speakerY = h * 0.42;
 
-    const leftSpeakerX = 60;
-    const rightSpeakerX = w - 170;
+    const leftSpeakerX = Math.max(8, w * 0.04);
+    const rightSpeakerX = Math.min(w - speakerW - 8, w * 0.96 - speakerW);
 
     [leftSpeakerX, rightSpeakerX].forEach(sx => {
       ctx.fillStyle = '#0a0d18';
@@ -1077,15 +1077,15 @@
       ctx.strokeRect(sx, speakerY, speakerW, speakerH);
 
       ctx.beginPath();
-      ctx.arc(sx + speakerW / 2, speakerY + 45, 18, 0, Math.PI * 2);
+      ctx.arc(sx + speakerW / 2, speakerY + (speakerH * 0.2), speakerW * 0.16, 0, Math.PI * 2);
       ctx.fillStyle = '#151c2e';
       ctx.fill();
       ctx.strokeStyle = palette.secondary;
       ctx.stroke();
 
-      const wooferRadius = 38 + state.bassEnergy * 16 + state.beatPulse * 12;
+      const wooferRadius = (speakerW * 0.35) + state.bassEnergy * 14 + state.beatPulse * 10;
       ctx.beginPath();
-      ctx.arc(sx + speakerW / 2, speakerY + 145, wooferRadius, 0, Math.PI * 2);
+      ctx.arc(sx + speakerW / 2, speakerY + (speakerH * 0.65), wooferRadius, 0, Math.PI * 2);
       const wooferGrad = ctx.createRadialGradient(sx + speakerW / 2, speakerY + 145, 5, sx + speakerW / 2, speakerY + 145, wooferRadius);
       wooferGrad.addColorStop(0, '#ffffff');
       wooferGrad.addColorStop(0.4, palette.primary);
@@ -1269,7 +1269,8 @@
     const cy = h / 2;
     const petals = 18;
 
-    const baseRadius = 100 + state.bassEnergy * 70 + state.beatPulse * 35;
+    const lotusScale = Math.min(1.0, Math.max(0.48, w / 950));
+    const baseRadius = (100 * lotusScale) + state.bassEnergy * 70 * lotusScale + state.beatPulse * 35 * lotusScale;
 
     ctx.save();
     ctx.translate(cx, cy);
@@ -1822,13 +1823,15 @@
     ctx.fill();
 
     // --- 🪐 ORBITING 3D PLANETS SYSTEM ---
+    const orbitScale = Math.min(1.0, Math.max(0.42, w / 950));
     state.planets.forEach((planet) => {
       planet.angle += planet.speed * deltaTime * (1 + state.smoothOverall * 1.5);
-      const currentOrbitR = planet.orbitRadius + Math.sin(time * 0.8 + planet.angle) * 15 + state.smoothBass * 40;
+      const baseOrbitR = planet.orbitRadius * orbitScale;
+      const currentOrbitR = baseOrbitR + Math.sin(time * 0.8 + planet.angle) * (15 * orbitScale) + state.smoothBass * (40 * orbitScale);
       const px = cx + Math.cos(planet.angle) * currentOrbitR;
       const py = cy + Math.sin(planet.angle) * currentOrbitR * 0.65; // Perspective tilt
 
-      const planetSize = planet.size + state.smoothMid * 6 + state.beatPulse * 4;
+      const planetSize = (planet.size * orbitScale) + state.smoothMid * 6 * orbitScale + state.beatPulse * 4 * orbitScale;
 
       // 1. Orbital Ring Guide Line
       ctx.save();
