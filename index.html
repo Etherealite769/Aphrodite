@@ -20,7 +20,7 @@
       <span>📺 Reference Video Sync</span>
       <button id="closeRefVideoBtn" class="btn-close-sm">✕</button>
     </div>
-    <video id="referenceVideo" src="Aphrodite - The Ridleys (Lyrics).mp4" playsinline muted></video>
+    <video id="referenceVideo" src="Aphrodite - The Ridleys (Lyrics).mp4" preload="auto" playsinline muted></video>
   </div>
 
   <!-- Ambient Backdrop Light Glow -->
@@ -101,6 +101,7 @@
 
   <!-- Single Line Kinetic Lyric Stage -->
   <div class="lyric-stage style-mythic" id="lyricStage">
+    <div class="lyric-backdrop-glow" id="lyricBackdropGlow"></div>
     <div class="lyric-current-line kinetic-active" id="lyricCurrent">
       <span class="placeholder-text">✨ APHRODITE — THE RIDLEYS ✨</span>
     </div>
@@ -134,8 +135,14 @@
       <div class="controls-main">
         <!-- Audio Playback Controls -->
         <div class="play-controls">
+          <button id="replayBtn" class="btn-replay" title="Replay Track from Beginning">
+            <span>↺</span>
+          </button>
           <button id="playPauseBtn" class="btn-play" title="Play / Pause">
             <span id="playIcon">▶</span>
+          </button>
+          <button id="loopBtn" class="btn-replay" title="Toggle Track Loop (Repeat Off)">
+            <span id="loopIcon">🔁</span>
           </button>
         </div>
 
@@ -175,7 +182,7 @@
   </main>
 
   <!-- Audio Element using Aphrodite - The Ridleys (Lyrics).mp4 -->
-  <audio id="audioElement" src="Aphrodite - The Ridleys (Lyrics).mp4" preload="metadata" crossorigin="anonymous"></audio>
+  <audio id="audioElement" src="Aphrodite - The Ridleys (Lyrics).mp4" preload="auto" crossorigin="anonymous"></audio>
 
   <!-- Scripts -->
   <script src="app.js"></script>

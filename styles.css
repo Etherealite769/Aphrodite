@@ -291,7 +291,7 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   PURE FLOATING 3D KINETIC LYRIC STAGE
+   PURE FLOATING 3D KINETIC LYRIC STAGE & DYNAMIC AURA
    -------------------------------------------------------------------------- */
 .lyric-stage {
   position: absolute;
@@ -307,6 +307,22 @@ html, body {
   z-index: 5;
   pointer-events: none;
   text-align: center;
+  perspective: 1000px;
+}
+
+.lyric-backdrop-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: 120px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, var(--color-glow) 0%, rgba(255, 101, 163, 0.12) 45%, transparent 75%);
+  filter: blur(40px);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .lyric-previous-line,
@@ -332,15 +348,15 @@ html, body {
   backdrop-filter: none !important;
   box-shadow: none !important;
 
-  will-change: transform, opacity;
-  transform: translateZ(0);
+  will-change: transform, opacity, filter;
+  transform-style: preserve-3d;
 
   -webkit-text-stroke: 1.8px #000000;
-  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 30px var(--color-primary));
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 35px var(--color-primary));
   text-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.95),
-    0 0 20px rgba(0, 0, 0, 0.9),
-    0 0 35px var(--color-primary);
+    0 2px 10px rgba(0, 0, 0, 0.95),
+    0 0 25px rgba(0, 0, 0, 0.9),
+    0 0 40px var(--color-primary);
 }
 
 /* Mythic 3D Style */
@@ -348,18 +364,18 @@ html, body {
   font-family: var(--font-heading);
   font-size: 3.6rem;
   font-weight: 900;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #ffffff;
   
-  background-image: linear-gradient(135deg, #ffffff 15%, var(--color-primary) 55%, var(--color-secondary) 95%);
+  background-image: linear-gradient(135deg, #ffffff 10%, var(--color-primary) 50%, var(--color-secondary) 95%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 2px #000000;
   filter: 
-    drop-shadow(0 8px 20px rgba(0, 0, 0, 0.98)) 
-    drop-shadow(0 0 32px var(--color-primary))
-    drop-shadow(0 0 55px var(--color-secondary));
+    drop-shadow(0 10px 25px rgba(0, 0, 0, 0.98)) 
+    drop-shadow(0 0 35px var(--color-primary))
+    drop-shadow(0 0 65px var(--color-secondary));
 }
 
 /* Karaoke Style */
@@ -372,20 +388,21 @@ html, body {
 .word-span {
   display: inline-block;
   margin: 0 8px;
-  color: rgba(255, 255, 255, 0.55);
-  transition: color 0.1s ease, transform 0.1s ease, filter 0.1s ease;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
   -webkit-text-stroke: 1.4px #000000;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.95));
+  will-change: transform, color;
 }
 
 .word-span.active-word {
   color: #ffffff;
-  transform: scale(1.18);
-  -webkit-text-stroke: 1.6px #000000;
+  transform: scale(1.22) translateY(-4px);
+  -webkit-text-stroke: 1.8px #000000;
   filter: 
-    drop-shadow(0 0 22px var(--color-primary)) 
-    drop-shadow(0 0 40px var(--color-secondary))
-    drop-shadow(0 6px 14px rgba(0,0,0,0.98));
+    drop-shadow(0 0 25px var(--color-primary)) 
+    drop-shadow(0 0 45px var(--color-secondary))
+    drop-shadow(0 8px 16px rgba(0,0,0,0.98));
 }
 
 /* Subtitle Style */
@@ -409,23 +426,24 @@ html, body {
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.95)) drop-shadow(0 0 28px var(--color-primary));
 }
 
-/* Tightly Synced Pop-Out Entrance Keyframes */
+/* Enhanced Tightly Synced Pop-Out Entrance Keyframes */
 .pop-pulse {
-  animation: floatPopPulse 0.32s cubic-bezier(0.12, 0.88, 0.25, 1.28) forwards;
+  animation: floatPopPulse 0.38s cubic-bezier(0.14, 0.92, 0.22, 1.25) forwards;
 }
 
 @keyframes floatPopPulse {
   0% { 
     opacity: 0; 
-    transform: scale(0.82) translateY(18px); 
-    filter: blur(6px) drop-shadow(0 0 0px transparent); 
+    transform: scale(0.78) translateY(22px) rotateX(15deg); 
+    filter: blur(8px) drop-shadow(0 0 0px transparent); 
   }
-  65% {
-    transform: scale(1.05) translateY(-2px);
+  60% {
+    transform: scale(1.06) translateY(-4px) rotateX(-4deg);
+    filter: blur(0px) drop-shadow(0 0 40px var(--color-primary));
   }
   100% { 
     opacity: 1; 
-    transform: scale(1) translateY(0); 
+    transform: scale(1) translateY(0) rotateX(0deg); 
     filter: blur(0); 
   }
 }
@@ -555,6 +573,12 @@ html, body {
   flex-wrap: wrap;
 }
 
+.play-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .btn-play {
   width: 48px;
   height: 48px;
@@ -571,6 +595,37 @@ html, body {
 .btn-play:hover {
   transform: scale(1.08);
   box-shadow: 0 0 28px var(--color-primary);
+}
+
+.btn-replay {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12px);
+  transition: all 0.15s ease;
+}
+
+.btn-replay:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: scale(1.1);
+  box-shadow: 0 0 14px var(--color-glow);
+}
+
+.btn-replay.active {
+  background: rgba(255, 215, 0, 0.22);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 0 16px var(--color-glow);
 }
 
 .control-label {

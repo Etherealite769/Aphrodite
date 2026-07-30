@@ -26,10 +26,15 @@
     meteors: [],            // Meteor Shower System for Starburst
     gardenFlowers: [],      // Sacred Lotus Garden Flowers
     fireflies: [],          // Floating Golden Fireflies
-    pondRipples: [],        // Animated Water Ripples for Lotus Pond
-    koiFish: [],            // Glowing Koi Fish in the Pond
+    isLooping: false,       // Track Loop Toggle State
+    rainDrops: [],          // Drizzle Rain Drops for Sacred Lotus
+    rainSplashes: [],       // Rain Impact Splash Rings on Pond
+    waveSplashes: [],       // Ocean Water Splashes for Cyber Waves
+    sparklingStars: [],     // Sparkling Stars for Starburst
+    floatingNotes: [],      // Floating Music Notes for 3D Spectrum
     galaxyTrails: [],       // Comet/Dust Trail Particles for Starburst
     nebulaNodes: [],        // Nebula Cloud Nodes for Galaxy
+    planets: [],            // 3D Orbiting Planets for Starburst
     floatingInstruments: [],// 3D Spectrum Musical Instruments
     bassEnergy: 0,
     midEnergy: 0,
@@ -70,6 +75,8 @@
 
   const playPauseBtn = document.getElementById('playPauseBtn');
   const playIcon = document.getElementById('playIcon');
+  const replayBtn = document.getElementById('replayBtn');
+  const loopBtn = document.getElementById('loopBtn');
   const progressContainer = document.getElementById('progressContainer');
   const progressFill = document.getElementById('progressFill');
   const progressHandle = document.getElementById('progressHandle');
@@ -94,6 +101,7 @@
   // Lyric Elements
   const lyricStage = document.getElementById('lyricStage');
   const lyricCurrentEl = document.getElementById('lyricCurrent');
+  const lyricBackdropGlow = document.getElementById('lyricBackdropGlow');
 
   // Palette & Video Exporter Elements
   const recordVideoBtn = document.getElementById('recordVideoBtn');
@@ -130,6 +138,7 @@
     initMeteors();
     initSacredGarden();
     initGalaxyTrails();
+    initSparklingStars();
     initInstruments();
     applyPaletteTheme(state.palette);
     requestAnimationFrame(renderLoop);
@@ -361,6 +370,17 @@
   }
 
   function renderActiveLyricLine(index, currentTime = 0) {
+    if (lyricBackdropGlow) {
+      lyricBackdropGlow.style.opacity = '0.9';
+      lyricBackdropGlow.style.transform = 'translate(-50%, -50%) scale(1.15)';
+      setTimeout(() => {
+        if (lyricBackdropGlow) {
+          lyricBackdropGlow.style.opacity = '0.6';
+          lyricBackdropGlow.style.transform = 'translate(-50%, -50%) scale(1.0)';
+        }
+      }, 350);
+    }
+
     if (index === -1) {
       let isInstrumentalSection = false;
 
@@ -504,12 +524,25 @@
     }
   }
 
-  // --- 🌸 Sacred Garden + Pond System ---
+  // --- 🌸 Sacred Garden + Pond + Drizzle Rain System ---
   function initSacredGarden() {
     state.gardenFlowers = [];
     state.fireflies = [];
     state.pondRipples = [];
     state.koiFish = [];
+    state.rainDrops = [];
+    state.rainSplashes = [];
+
+    // Initialize Drizzle Rain Drops
+    for (let r = 0; r < 90; r++) {
+      state.rainDrops.push({
+        x: Math.random() * window.innerWidth * 1.3 - window.innerWidth * 0.15,
+        y: Math.random() * window.innerHeight,
+        length: Math.random() * 22 + 14,
+        speed: Math.random() * 9 + 14,
+        opacity: Math.random() * 0.4 + 0.15
+      });
+    }
 
     const flowerConfigs = [
       { relX: 0.12, relY: 0.22, petals: 10, scale: 0.5 },
@@ -857,6 +890,62 @@
     ctx.globalAlpha = 1.0;
     ctx.restore();
 
+    // --- DRIZZLE RAIN POURING & POND SPLASHES ---
+    ctx.save();
+    for (let i = 0; i < state.rainDrops.length; i++) {
+      const drop = state.rainDrops[i];
+      drop.x += deltaTime * 40;
+      drop.y += drop.speed * 60 * deltaTime;
+
+      // Draw slanting rain drop line
+      ctx.beginPath();
+      ctx.moveTo(drop.x, drop.y);
+      ctx.lineTo(drop.x - 4, drop.y + drop.length);
+      ctx.strokeStyle = `rgba(180, 225, 255, ${drop.opacity})`;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      // Rain drop hits pond surface
+      if (drop.y >= pondY) {
+        if (Math.random() < 0.4) {
+          state.rainSplashes.push({
+            x: drop.x,
+            y: pondY + Math.random() * pondH * 0.8,
+            radius: 1,
+            maxRadius: Math.random() * 14 + 6,
+            opacity: 0.7
+          });
+        }
+        drop.y = -drop.length - Math.random() * 40;
+        drop.x = Math.random() * w * 1.3 - w * 0.15;
+      }
+    }
+
+    // Draw rain splash rings on pond
+    for (let s = state.rainSplashes.length - 1; s >= 0; s--) {
+      const splash = state.rainSplashes[s];
+      splash.radius += deltaTime * 24;
+      splash.opacity -= deltaTime * 1.8;
+
+      if (splash.opacity <= 0 || splash.radius >= splash.maxRadius) {
+        state.rainSplashes.splice(s, 1);
+        continue;
+      }
+
+      ctx.beginPath();
+      ctx.save();
+      ctx.translate(splash.x, splash.y);
+      ctx.scale(1, 0.35);
+      ctx.arc(0, 0, splash.radius, 0, Math.PI * 2);
+      ctx.restore();
+      ctx.strokeStyle = palette.primary;
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = splash.opacity;
+      ctx.stroke();
+      ctx.globalAlpha = 1.0;
+    }
+    ctx.restore();
+
     // --- FIREFLIES ---
     state.fireflies.forEach((ff) => {
       ff.x += ff.speedX * (1 + state.trebleEnergy * 2);
@@ -1050,6 +1139,52 @@
       ctx.shadowColor = palette.primary;
       ctx.fillRect(cx + chanW / 2 - 8, knobY - 5, 16, 10);
     }
+
+    // --- FLOATING MUSIC NOTES (🎵 🎶 🎼 ♩ ♪) ---
+    if (Math.random() < 0.18 || state.beatDetected) {
+      const symbols = ['🎵', '🎶', '🎼', '♩', '♪'];
+      state.floatingNotes.push({
+        x: Math.random() * w * 0.75 + w * 0.12,
+        y: deskY - 10,
+        vy: -(Math.random() * 1.8 + 1.2 + state.smoothMid * 2),
+        vx: (Math.random() - 0.5) * 0.9,
+        symbol: symbols[Math.floor(Math.random() * symbols.length)],
+        size: Math.random() * 16 + 20,
+        rotation: (Math.random() - 0.5) * 0.6,
+        rotSpeed: (Math.random() - 0.5) * 0.05,
+        opacity: 1.0,
+        color: Math.random() > 0.5 ? palette.primary : palette.secondary
+      });
+    }
+
+    ctx.save();
+    for (let fn = state.floatingNotes.length - 1; fn >= 0; fn--) {
+      const note = state.floatingNotes[fn];
+      note.y += note.vy * 60 * deltaTime;
+      note.x += (note.vx + Math.sin(time * 2 + fn) * 0.5) * 60 * deltaTime;
+      note.rotation += note.rotSpeed;
+      note.opacity -= deltaTime * 0.35;
+
+      if (note.opacity <= 0 || note.y < -30) {
+        state.floatingNotes.splice(fn, 1);
+        continue;
+      }
+
+      ctx.save();
+      ctx.translate(note.x, note.y);
+      ctx.rotate(note.rotation);
+      ctx.font = `${note.size * (1 + state.smoothTreble * 0.4)}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = note.color;
+      ctx.globalAlpha = note.opacity;
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = note.color;
+      ctx.fillText(note.symbol, 0, 0);
+      ctx.restore();
+    }
+    ctx.globalAlpha = 1.0;
+    ctx.restore();
   }
 
   let time = 0;
@@ -1318,6 +1453,44 @@
 
     ctx.restore();
 
+    // --- WATER SPLASHES & OCEAN SPRAY PARTICLES ---
+    if (state.beatDetected || Math.random() < 0.35) {
+      state.waveSplashes.push({
+        x: boatX + (Math.random() - 0.5) * 50,
+        y: boatY + 6,
+        vx: (Math.random() - 0.5) * 3 - 1.2,
+        vy: -(Math.random() * 5 + 3 + state.smoothBass * 5),
+        gravity: 0.28,
+        radius: Math.random() * 3 + 1.5,
+        opacity: 0.9,
+        color: Math.random() > 0.5 ? palette.primary : palette.secondary
+      });
+    }
+
+    ctx.save();
+    for (let sp = state.waveSplashes.length - 1; sp >= 0; sp--) {
+      const splash = state.waveSplashes[sp];
+      splash.x += splash.vx * 60 * deltaTime;
+      splash.y += splash.vy * 60 * deltaTime;
+      splash.vy += splash.gravity * 60 * deltaTime;
+      splash.opacity -= deltaTime * 0.9;
+
+      if (splash.opacity <= 0 || splash.y > h) {
+        state.waveSplashes.splice(sp, 1);
+        continue;
+      }
+
+      ctx.beginPath();
+      ctx.arc(splash.x, splash.y, splash.radius * (1 + state.smoothBass * 0.5), 0, Math.PI * 2);
+      ctx.fillStyle = splash.color;
+      ctx.globalAlpha = splash.opacity;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = splash.color;
+      ctx.fill();
+      ctx.globalAlpha = 1.0;
+    }
+    ctx.restore();
+
     state.particles.forEach((p, idx) => {
       p.x += p.vx * (1 + state.trebleEnergy * 3.5 + state.beatPulse * 2);
       p.y += p.vy * (1 + state.bassEnergy * 3.5 + state.beatPulse * 2);
@@ -1337,8 +1510,55 @@
   }
 
   // --------------------------------------------------------------------------
-  // 3. 🌌 GALAXY STARBURST + COSMIC TRAIL SYSTEM
+  // 3. 🌌 GALAXY STARBURST + COSMIC TRAIL + SPARKLING STARS SYSTEM
   // --------------------------------------------------------------------------
+  function initSparklingStars() {
+    state.sparklingStars = [];
+    for (let s = 0; s < 140; s++) {
+      state.sparklingStars.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        radius: Math.random() * 2.8 + 1.2,
+        phase: Math.random() * Math.PI * 2,
+        twinkleSpeed: Math.random() * 2.5 + 1.0,
+        colorIdx: Math.floor(Math.random() * 3)
+      });
+    }
+  }
+
+  function drawSparklingStars(w, h, palette) {
+    const colors = [palette.primary, palette.secondary, palette.tertiary];
+    ctx.save();
+    state.sparklingStars.forEach((star) => {
+      star.phase += deltaTime * star.twinkleSpeed;
+      const twinkleAlpha = Math.abs(Math.sin(star.phase)) * 0.75 + 0.25 + state.smoothTreble * 0.25;
+
+      const starColor = colors[star.colorIdx];
+      const r = star.radius * (1 + state.smoothTreble * 0.6);
+
+      // Draw 4-Point Starburst Sparkle
+      ctx.beginPath();
+      ctx.moveTo(star.x - r * 2.5, star.y);
+      ctx.lineTo(star.x + r * 2.5, star.y);
+      ctx.moveTo(star.x, star.y - r * 2.5);
+      ctx.lineTo(star.x, star.y + r * 2.5);
+      ctx.strokeStyle = starColor;
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = Math.min(1.0, twinkleAlpha * 0.7);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.globalAlpha = Math.min(1.0, twinkleAlpha);
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = starColor;
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1.0;
+    ctx.restore();
+  }
+
   function initGalaxyTrails() {
     state.galaxyTrails = [];
     state.nebulaNodes = [];
@@ -1368,11 +1588,80 @@
         colorIdx: Math.floor(Math.random() * 3)
       });
     }
+
+    // 🪐 Orbiting 3D Planets System
+    state.planets = [
+      {
+        name: 'Crimson Terrestrial',
+        orbitRadius: 160,
+        speed: 0.28,
+        size: 13,
+        angle: 4.2,
+        colorCore: '#ff007f',
+        colorEdge: '#4a0022',
+        hasRings: false,
+        moons: []
+      },
+      {
+        name: 'Ice Giant',
+        orbitRadius: 250,
+        speed: -0.18,
+        size: 18,
+        angle: 2.1,
+        colorCore: '#00f2fe',
+        colorEdge: '#06283d',
+        hasRings: true,
+        ringColor1: 'rgba(0, 242, 254, 0.65)',
+        ringColor2: 'rgba(79, 172, 254, 0.25)',
+        ringRadiusX: 34,
+        ringRadiusY: 9,
+        tilt: -0.25,
+        moons: [{ radius: 4, dist: 28, speed: -2.2, angle: 1.2, color: '#a8ff78' }]
+      },
+      {
+        name: 'Ringed Golden Gas Giant',
+        orbitRadius: 360,
+        speed: 0.12,
+        size: 26,
+        angle: 0.6,
+        colorCore: '#ffd700',
+        colorEdge: '#7d5a00',
+        hasRings: true,
+        ringColor1: 'rgba(255, 215, 0, 0.8)',
+        ringColor2: 'rgba(255, 101, 163, 0.4)',
+        ringRadiusX: 52,
+        ringRadiusY: 15,
+        tilt: 0.38,
+        moons: [
+          { radius: 5, dist: 42, speed: 1.8, angle: 0, color: '#ffffff' },
+          { radius: 3.5, dist: 54, speed: -1.2, angle: 3.1, color: '#a060ff' }
+        ]
+      },
+      {
+        name: 'Emerald Aurora Planet',
+        orbitRadius: 470,
+        speed: -0.08,
+        size: 21,
+        angle: 5.4,
+        colorCore: '#78ffd6',
+        colorEdge: '#0a4232',
+        hasRings: true,
+        ringColor1: 'rgba(120, 255, 214, 0.75)',
+        ringColor2: 'rgba(168, 255, 120, 0.3)',
+        ringRadiusX: 42,
+        ringRadiusY: 11,
+        tilt: 0.42,
+        moons: [{ radius: 4.5, dist: 35, speed: 1.4, angle: 2.5, color: '#ffffff' }]
+      }
+    ];
   }
 
   function drawGalaxyStarburst(w, h, palette) {
     const cx = w / 2;
     const cy = h / 2;
+
+    // --- SPARKLING STARS OUTSIDE ---
+    drawSparklingStars(w, h, palette);
 
     // --- NEBULA CLOUDS (soft background galaxy haze) ---
     ctx.save();
@@ -1531,6 +1820,117 @@
     starGrad.addColorStop(1, 'transparent');
     ctx.fillStyle = starGrad;
     ctx.fill();
+
+    // --- 🪐 ORBITING 3D PLANETS SYSTEM ---
+    state.planets.forEach((planet) => {
+      planet.angle += planet.speed * deltaTime * (1 + state.smoothOverall * 1.5);
+      const currentOrbitR = planet.orbitRadius + Math.sin(time * 0.8 + planet.angle) * 15 + state.smoothBass * 40;
+      const px = cx + Math.cos(planet.angle) * currentOrbitR;
+      const py = cy + Math.sin(planet.angle) * currentOrbitR * 0.65; // Perspective tilt
+
+      const planetSize = planet.size + state.smoothMid * 6 + state.beatPulse * 4;
+
+      // 1. Orbital Ring Guide Line
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, currentOrbitR, currentOrbitR * 0.65, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = planet.colorCore;
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.12 + state.smoothMid * 0.1;
+      ctx.setLineDash([4, 8]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      // 2. Back Half of Planetary Ring (if any)
+      if (planet.hasRings) {
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.rotate(planet.tilt);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, planet.ringRadiusX + state.beatPulse * 5, planet.ringRadiusY, 0, Math.PI, Math.PI * 2);
+        ctx.strokeStyle = planet.ringColor1;
+        ctx.lineWidth = 3;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = planet.ringColor1;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // 3. Planet Atmosphere Outer Glow
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(px, py, planetSize * 1.5, 0, Math.PI * 2);
+      const atmosGrad = ctx.createRadialGradient(px, py, planetSize * 0.8, px, py, planetSize * 1.6);
+      atmosGrad.addColorStop(0, planet.colorCore);
+      atmosGrad.addColorStop(1, 'transparent');
+      ctx.fillStyle = atmosGrad;
+      ctx.globalAlpha = 0.4 + state.beatPulse * 0.3;
+      ctx.fill();
+      ctx.restore();
+
+      // 4. Planet 3D Sphere (shaded relative to light from core at cx, cy)
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(px, py, planetSize, 0, Math.PI * 2);
+
+      // Vector towards light source (core at cx, cy)
+      const dx = cx - px;
+      const dy = cy - py;
+      const dist = Math.hypot(dx, dy);
+      const lightX = px + (dx / dist) * (planetSize * 0.4);
+      const lightY = py + (dy / dist) * (planetSize * 0.4);
+
+      const sphereGrad = ctx.createRadialGradient(lightX, lightY, planetSize * 0.1, px, py, planetSize);
+      sphereGrad.addColorStop(0, '#ffffff');
+      sphereGrad.addColorStop(0.35, planet.colorCore);
+      sphereGrad.addColorStop(1, planet.colorEdge);
+
+      ctx.fillStyle = sphereGrad;
+      ctx.shadowBlur = 15 + state.beatPulse * 10;
+      ctx.shadowColor = planet.colorCore;
+      ctx.fill();
+      ctx.restore();
+
+      // 5. Front Half of Planetary Ring
+      if (planet.hasRings) {
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.rotate(planet.tilt);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, planet.ringRadiusX + state.beatPulse * 5, planet.ringRadiusY, 0, 0, Math.PI);
+        ctx.strokeStyle = planet.ringColor1;
+        ctx.lineWidth = 3.5;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = planet.ringColor1;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.ellipse(0, 0, (planet.ringRadiusX + 6) + state.beatPulse * 5, planet.ringRadiusY + 2, 0, 0, Math.PI);
+        ctx.strokeStyle = planet.ringColor2;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // 6. Orbiting Moons
+      if (planet.moons && planet.moons.length > 0) {
+        planet.moons.forEach((moon) => {
+          moon.angle += moon.speed * deltaTime * (1 + state.smoothTreble * 2);
+          const mx = px + Math.cos(moon.angle) * moon.dist;
+          const my = py + Math.sin(moon.angle) * (moon.dist * 0.45);
+
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(mx, my, moon.radius, 0, Math.PI * 2);
+          ctx.fillStyle = moon.color;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = moon.color;
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+    });
   }
 
   // --------------------------------------------------------------------------
@@ -1711,6 +2111,37 @@
   function setupEventListeners() {
     playPauseBtn.addEventListener('click', togglePlayPause);
 
+    if (replayBtn) {
+      replayBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        audioElement.currentTime = 0;
+        if (referenceVideo) referenceVideo.currentTime = 0;
+        if (!state.isPlaying) {
+          togglePlayPause();
+        }
+      });
+    }
+
+    if (loopBtn) {
+      loopBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        state.isLooping = !state.isLooping;
+        audioElement.loop = state.isLooping;
+        loopBtn.classList.toggle('active', state.isLooping);
+        loopBtn.title = state.isLooping ? 'Toggle Track Loop (Loop ON)' : 'Toggle Track Loop (Loop OFF)';
+      });
+    }
+
+    audioElement.addEventListener('ended', () => {
+      if (state.isLooping) {
+        audioElement.currentTime = 0;
+        audioElement.play();
+      } else {
+        state.isPlaying = false;
+        playIcon.textContent = '▶';
+      }
+    });
+
     progressContainer.addEventListener('click', (e) => {
       if (!audioElement.duration) return;
       const rect = progressContainer.getBoundingClientRect();
@@ -1755,7 +2186,8 @@
     }
 
     document.querySelectorAll('.mode-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const newMode = btn.getAttribute('data-mode');
         if (newMode === state.mode) return;
 
@@ -1770,7 +2202,8 @@
     });
 
     document.querySelectorAll('.lyric-style-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         document.querySelectorAll('.lyric-style-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         state.lyricStyle = btn.getAttribute('data-style');
@@ -1784,7 +2217,8 @@
 
     // Zero-Delay Live Palette Switcher while Music Plays
     document.querySelectorAll('.palette-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         state.autoPalette = false; // Disable auto-sync if user manually clicks a palette
         const selectedPalette = btn.getAttribute('data-palette');
         applyPaletteTheme(selectedPalette);

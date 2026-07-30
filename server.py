@@ -15,6 +15,11 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=DIRECTORY, **kwargs)
 
+    def end_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Cache-Control", "public, max-age=31536000")
+        super().end_headers()
+
     def send_head(self):
         path = self.translate_path(self.path)
         if os.path.isdir(path):
@@ -50,7 +55,6 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(length))
         self.send_header("Content-Range", f"bytes {start}-{end}/{file_size}")
         self.send_header("Accept-Ranges", "bytes")
-        self.send_header("Cache-Control", "no-cache")
         self.end_headers()
 
         try:
