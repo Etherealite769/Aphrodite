@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aphrodite (The Ridleys) — Lyric Animated Video & Music Visualizer</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Outfit:wght@300;400;600;800&family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-gold">
+  <!-- Fullscreen Main Animation Canvas -->
+  <canvas id="animationCanvas"></canvas>
+
+  <!-- Floating Reference MP4 Video Window (Picture-in-Picture) -->
+  <div class="reference-video-window" id="refVideoWindow">
+    <div class="ref-header">
+      <span>📺 Reference Video Sync</span>
+      <button id="closeRefVideoBtn" class="btn-close-sm">✕</button>
+    </div>
+    <video id="referenceVideo" src="Aphrodite - The Ridleys (Lyrics).mp4" playsinline muted></video>
+  </div>
+
+  <!-- Ambient Backdrop Light Glow -->
+  <div class="ambient-glow" id="ambientGlow"></div>
+
+  <!-- Header Overlay -->
+  <header class="app-header">
+    <div class="brand-title">
+      <span class="greek-symbol">🏛️</span>
+      <div>
+        <h1>APHRODITE</h1>
+        <p class="subtitle">Lyric Animated Video Suite — The Ridleys</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="badge live-badge">
+        <span class="pulse-dot"></span>
+        <span id="audioSourceLabel">The Ridleys — Aphrodite</span>
+      </div>
+      <button id="toggleRefVideoBtn" class="btn btn-outline" title="Show floating reference MP4 video to verify sync">
+        📺 Reference MP4
+      </button>
+      <button id="recordVideoBtn" class="btn btn-accent" title="Record & Export HD Video Clip">
+        🎥 Export Video
+      </button>
+      <button id="micToggleBtn" class="btn btn-outline" title="Switch to Live Microphone input">
+        🎤 Mic Mode
+      </button>
+      <button id="audioSettingsBtn" class="btn btn-icon" title="Audio Settings">
+        ⚙
+      </button>
+      <button id="fullscreenBtn" class="btn btn-icon" title="Toggle Fullscreen">
+        ⛶
+      </button>
+    </div>
+  </header>
+
+  <!-- Recording Indicator Badge -->
+  <div class="recording-badge" id="recordingBadge">
+    <span class="rec-dot"></span> RECORDING HD LYRIC VIDEO <span id="recTime">00:00</span>
+  </div>
+
+  <!-- Floating Audio Settings Popover -->
+  <div class="audio-settings-popover" id="audioSettingsPopover">
+    <div class="popover-header">
+      <span>⚙ Audio Settings</span>
+      <button id="closeAudioSettings" class="btn-close-sm">✕</button>
+    </div>
+    <div class="popover-body">
+      <!-- Volume Control -->
+      <div class="audio-adjuster-card">
+        <div class="adjuster-header">
+          <button id="volMuteBtn" class="icon-btn-inline" title="Mute / Unmute">🔊</button>
+          <span class="adjuster-label">VOLUME</span>
+          <span class="adjuster-value" id="volVal">90%</span>
+        </div>
+        <input type="range" id="volumeSlider" class="custom-range-slider" min="0" max="1" step="0.01" value="0.9">
+      </div>
+      <!-- Audio Sensitivity -->
+      <div class="audio-adjuster-card">
+        <div class="adjuster-header">
+          <span class="icon-inline">⚡</span>
+          <span class="adjuster-label">SENSITIVITY</span>
+          <span class="adjuster-value" id="sensVal">1.5x</span>
+        </div>
+        <input type="range" id="sensitivitySlider" class="custom-range-slider" min="0.5" max="3.0" step="0.1" value="1.5">
+      </div>
+    </div>
+  </div>
+
+  <!-- Waveform Overview Header Strip -->
+  <div class="waveform-overview-container" id="waveformContainer">
+    <div class="waveform-title">PRE-COMPUTED AUDIO ENVELOPE</div>
+    <div class="waveform-canvas-wrapper">
+      <canvas id="waveformCanvas" height="36"></canvas>
+    </div>
+  </div>
+
+  <!-- Single Line Kinetic Lyric Stage -->
+  <div class="lyric-stage style-mythic" id="lyricStage">
+    <div class="lyric-current-line kinetic-active" id="lyricCurrent">
+      <span class="placeholder-text">✨ APHRODITE — THE RIDLEYS ✨</span>
+    </div>
+  </div>
+
+  <!-- Central HUD Audio Frequency Display -->
+  <div class="center-hud" id="centerHud">
+    <div class="song-title-glow" id="hudTrackTitle">APHRODITE</div>
+    <div class="song-artist" id="hudTrackArtist">The Ridleys</div>
+    <div class="frequency-tags">
+      <span class="freq-tag bass">BASS <b id="bassLevel">0%</b></span>
+      <span class="freq-tag mid">MID <b id="midLevel">0%</b></span>
+      <span class="freq-tag treble">TREBLE <b id="trebleLevel">0%</b></span>
+    </div>
+  </div>
+
+  <!-- Glassmorphism Floating Control Bar -->
+  <main class="control-panel-wrapper">
+    <div class="glass-panel control-panel">
+
+      <!-- Track Progress Bar & Time -->
+      <div class="progress-section">
+        <span class="time-text" id="currentTimeText">00:00</span>
+        <div class="progress-bar-container" id="progressContainer">
+          <div class="progress-bar-fill" id="progressFill"></div>
+          <div class="progress-handle" id="progressHandle"></div>
+        </div>
+        <span class="time-text" id="durationTimeText">00:00</span>
+      </div>
+
+      <div class="controls-main">
+        <!-- Audio Playback Controls -->
+        <div class="play-controls">
+          <button id="playPauseBtn" class="btn-play" title="Play / Pause">
+            <span id="playIcon">▶</span>
+          </button>
+        </div>
+
+        <!-- Animation Mode Picker -->
+        <div class="selector-group">
+          <label class="control-label">ANIMATION MODE</label>
+          <div class="mode-btn-group" id="modeBtnGroup">
+            <button class="mode-btn active" data-mode="lotus">🌸 Sacred Lotus</button>
+            <button class="mode-btn" data-mode="ocean">🌊 Cyber Waves</button>
+            <button class="mode-btn" data-mode="starburst">🌌 Starburst</button>
+            <button class="mode-btn" data-mode="equalizer">⚡ 3D Spectrum</button>
+          </div>
+        </div>
+
+        <!-- Lyric Style Selector -->
+        <div class="selector-group">
+          <label class="control-label">LYRIC STYLE</label>
+          <div class="lyric-style-group" id="lyricStyleGroup">
+            <button class="lyric-style-btn active" data-style="mythic">✨ Mythic 3D</button>
+            <button class="lyric-style-btn" data-style="karaoke">🎤 Karaoke</button>
+            <button class="lyric-style-btn" data-style="subtitle">🎬 Subtitle</button>
+          </div>
+        </div>
+
+        <!-- Color Palette Picker -->
+        <div class="selector-group">
+          <label class="control-label">PALETTE</label>
+          <div class="palette-btn-group" id="paletteGroup">
+            <button class="palette-btn active" data-palette="gold" style="background: linear-gradient(135deg, #ffd700, #ff69b4);" title="Rose Quartz & Gold"></button>
+            <button class="palette-btn" data-palette="ocean" style="background: linear-gradient(135deg, #00f2fe, #4facfe);" title="Aegean Ocean Emerald"></button>
+            <button class="palette-btn" data-palette="cyber" style="background: linear-gradient(135deg, #ff007f, #7928ca);" title="Cyber Violet"></button>
+            <button class="palette-btn" data-palette="celestial" style="background: linear-gradient(135deg, #a8ff78, #78ffd6);" title="Celestial Aurora"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Audio Element using Aphrodite - The Ridleys (Lyrics).mp4 -->
+  <audio id="audioElement" src="Aphrodite - The Ridleys (Lyrics).mp4" preload="metadata" crossorigin="anonymous"></audio>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>

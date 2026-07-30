@@ -1,0 +1,772 @@
+{
+  "title": "Aphrodite",
+  "artist": "The Ridleys",
+  "lyrics": [
+    {
+      "id": 1,
+      "start": 0.12,
+      "end": 3.78,
+      "text": "You're the moon that glows in the sky",
+      "words": [
+        "You're",
+        "the",
+        "moon",
+        "that",
+        "glows",
+        "in",
+        "the",
+        "sky"
+      ]
+    },
+    {
+      "id": 2,
+      "start": 3.88,
+      "end": 8.28,
+      "text": "Lighting up the world when it's blue",
+      "words": [
+        "Lighting",
+        "up",
+        "the",
+        "world",
+        "when",
+        "it's",
+        "blue"
+      ]
+    },
+    {
+      "id": 3,
+      "start": 8.38,
+      "end": 11.76,
+      "text": "Stars they dance, though late in the night",
+      "words": [
+        "Stars",
+        "they",
+        "dance",
+        "though",
+        "late",
+        "in",
+        "the",
+        "night"
+      ]
+    },
+    {
+      "id": 4,
+      "start": 11.86,
+      "end": 18.36,
+      "text": "Don't you know they dance just for you?",
+      "words": [
+        "Don't",
+        "you",
+        "know",
+        "they",
+        "dance",
+        "just",
+        "for",
+        "you"
+      ]
+    },
+    {
+      "id": 5,
+      "start": 34.93,
+      "end": 38.53,
+      "text": "There you are, above darkened clouds",
+      "words": [
+        "There",
+        "you",
+        "are",
+        "above",
+        "darkened",
+        "clouds"
+      ]
+    },
+    {
+      "id": 6,
+      "start": 38.63,
+      "end": 42.64,
+      "text": "Smiling at the world from afar",
+      "words": [
+        "Smiling",
+        "at",
+        "the",
+        "world",
+        "from",
+        "afar"
+      ]
+    },
+    {
+      "id": 7,
+      "start": 42.74,
+      "end": 46.07,
+      "text": "With the stars, you wander around",
+      "words": [
+        "With",
+        "the",
+        "stars",
+        "you",
+        "wander",
+        "around"
+      ]
+    },
+    {
+      "id": 8,
+      "start": 46.17,
+      "end": 51.35,
+      "text": "May they follow you wherever you are",
+      "words": [
+        "May",
+        "they",
+        "follow",
+        "you",
+        "wherever",
+        "you",
+        "are"
+      ]
+    },
+    {
+      "id": 9,
+      "start": 51.45,
+      "end": 54.09,
+      "text": "Here I am, just another boy",
+      "words": [
+        "Here",
+        "I",
+        "am",
+        "just",
+        "another",
+        "boy"
+      ]
+    },
+    {
+      "id": 10,
+      "start": 54.19,
+      "end": 59.58,
+      "text": "Singing songs that others have sung",
+      "words": [
+        "Singing",
+        "songs",
+        "that",
+        "others",
+        "have",
+        "sung"
+      ]
+    },
+    {
+      "id": 11,
+      "start": 59.68,
+      "end": 62.23,
+      "text": "Tryin' to find the words to employ",
+      "words": [
+        "Tryin'",
+        "to",
+        "find",
+        "the",
+        "words",
+        "to",
+        "employ"
+      ]
+    },
+    {
+      "id": 12,
+      "start": 62.33,
+      "end": 67.26,
+      "text": "To adore the goddess of love",
+      "words": [
+        "To",
+        "adore",
+        "the",
+        "goddess",
+        "of",
+        "love"
+      ]
+    },
+    {
+      "id": 13,
+      "start": 67.36,
+      "end": 71.5,
+      "text": "Ohh, you've got me in a daze, yeah",
+      "words": [
+        "Ohh",
+        "you've",
+        "got",
+        "me",
+        "in",
+        "a",
+        "daze",
+        "yeah"
+      ]
+    },
+    {
+      "id": 14,
+      "start": 71.6,
+      "end": 75.27,
+      "text": "No, it's not another phase",
+      "words": [
+        "No",
+        "it's",
+        "not",
+        "another",
+        "phase"
+      ]
+    },
+    {
+      "id": 15,
+      "start": 75.37,
+      "end": 81.88,
+      "text": "You gave me one look and now I can't get my mind off of you",
+      "words": [
+        "You",
+        "gave",
+        "me",
+        "one",
+        "look",
+        "and",
+        "now",
+        "I",
+        "can't",
+        "get",
+        "my",
+        "mind",
+        "off",
+        "of",
+        "you"
+      ]
+    },
+    {
+      "id": 16,
+      "start": 81.98,
+      "end": 83.71,
+      "text": "And it's all because",
+      "words": [
+        "And",
+        "it's",
+        "all",
+        "because"
+      ]
+    },
+    {
+      "id": 17,
+      "start": 83.81,
+      "end": 87.07,
+      "text": "I see the galaxies when I look in your eyes",
+      "words": [
+        "I",
+        "see",
+        "the",
+        "galaxies",
+        "when",
+        "I",
+        "look",
+        "in",
+        "your",
+        "eyes"
+      ]
+    },
+    {
+      "id": 18,
+      "start": 87.17,
+      "end": 91.7,
+      "text": "And I, can't speak, no, I, can't speak at all",
+      "words": [
+        "And",
+        "I",
+        "can't",
+        "speak",
+        "no",
+        "I",
+        "can't",
+        "speak",
+        "at",
+        "all"
+      ]
+    },
+    {
+      "id": 19,
+      "start": 91.8,
+      "end": 95.45,
+      "text": "I swear to Zeus, you're Aphrodite in disguise",
+      "words": [
+        "I",
+        "swear",
+        "to",
+        "Zeus",
+        "you're",
+        "Aphrodite",
+        "in",
+        "disguise"
+      ]
+    },
+    {
+      "id": 20,
+      "start": 95.55,
+      "end": 99.24,
+      "text": "Don't think that you could hide it from me",
+      "words": [
+        "Don't",
+        "think",
+        "that",
+        "you",
+        "could",
+        "hide",
+        "it",
+        "from",
+        "me"
+      ]
+    },
+    {
+      "id": 21,
+      "start": 99.34,
+      "end": 103.55,
+      "text": "Oh, no, I never thought I'd get this close to someone so divine",
+      "words": [
+        "Oh",
+        "no",
+        "I",
+        "never",
+        "thought",
+        "I'd",
+        "get",
+        "this",
+        "close",
+        "to",
+        "someone",
+        "so",
+        "divine"
+      ]
+    },
+    {
+      "id": 22,
+      "start": 103.65,
+      "end": 108.37,
+      "text": "Oh, I, can't breathe, no, I, can't breathe at all",
+      "words": [
+        "Oh",
+        "I",
+        "can't",
+        "breathe",
+        "no",
+        "I",
+        "can't",
+        "breathe",
+        "at",
+        "all"
+      ]
+    },
+    {
+      "id": 23,
+      "start": 108.47,
+      "end": 111.67,
+      "text": "Aphrodite, could you, could you please be mine?",
+      "words": [
+        "Aphrodite",
+        "could",
+        "you",
+        "could",
+        "you",
+        "please",
+        "be",
+        "mine"
+      ]
+    },
+    {
+      "id": 24,
+      "start": 111.77,
+      "end": 114.34,
+      "text": "Oh",
+      "words": [
+        "Oh"
+      ]
+    },
+    {
+      "id": 25,
+      "start": 114.44,
+      "end": 115.67,
+      "text": "Could you please be mine?",
+      "words": [
+        "Could",
+        "you",
+        "please",
+        "be",
+        "mine"
+      ]
+    },
+    {
+      "id": 26,
+      "start": 115.77,
+      "end": 122.27,
+      "text": "Oh, mine",
+      "words": [
+        "Oh",
+        "mine"
+      ]
+    },
+    {
+      "id": 27,
+      "start": 133.37,
+      "end": 136.59,
+      "text": "Here you are, I've waited so long",
+      "words": [
+        "Here",
+        "you",
+        "are",
+        "I've",
+        "waited",
+        "so",
+        "long"
+      ]
+    },
+    {
+      "id": 28,
+      "start": 136.69,
+      "end": 141.23,
+      "text": "Hoping you would sit down and stay",
+      "words": [
+        "Hoping",
+        "you",
+        "would",
+        "sit",
+        "down",
+        "and",
+        "stay"
+      ]
+    },
+    {
+      "id": 29,
+      "start": 141.33,
+      "end": 144.54,
+      "text": "'Cause with the stars, I've been dancing along",
+      "words": [
+        "'Cause",
+        "with",
+        "the",
+        "stars",
+        "I've",
+        "been",
+        "dancing",
+        "along"
+      ]
+    },
+    {
+      "id": 30,
+      "start": 144.64,
+      "end": 149.48,
+      "text": "Like a fool, so you'd look my way",
+      "words": [
+        "Like",
+        "a",
+        "fool",
+        "so",
+        "you'd",
+        "look",
+        "my",
+        "way"
+      ]
+    },
+    {
+      "id": 31,
+      "start": 149.58,
+      "end": 153.37,
+      "text": "You're the moon that glows in the sky",
+      "words": [
+        "You're",
+        "the",
+        "moon",
+        "that",
+        "glows",
+        "in",
+        "the",
+        "sky"
+      ]
+    },
+    {
+      "id": 32,
+      "start": 153.47,
+      "end": 157.62,
+      "text": "Lighting up my world when it's blue",
+      "words": [
+        "Lighting",
+        "up",
+        "my",
+        "world",
+        "when",
+        "it's",
+        "blue"
+      ]
+    },
+    {
+      "id": 33,
+      "start": 157.72,
+      "end": 161.97,
+      "text": "And here I sing, though late in the night",
+      "words": [
+        "And",
+        "here",
+        "I",
+        "sing",
+        "though",
+        "late",
+        "in",
+        "the",
+        "night"
+      ]
+    },
+    {
+      "id": 34,
+      "start": 162.07,
+      "end": 165.52,
+      "text": "Hope you know I sing just for you",
+      "words": [
+        "Hope",
+        "you",
+        "know",
+        "I",
+        "sing",
+        "just",
+        "for",
+        "you"
+      ]
+    },
+    {
+      "id": 35,
+      "start": 165.62,
+      "end": 169.96,
+      "text": "Ohh, you've got me in a daze, yeah",
+      "words": [
+        "Ohh",
+        "you've",
+        "got",
+        "me",
+        "in",
+        "a",
+        "daze",
+        "yeah"
+      ]
+    },
+    {
+      "id": 36,
+      "start": 170.06,
+      "end": 173.4,
+      "text": "No, it's not another phase",
+      "words": [
+        "No",
+        "it's",
+        "not",
+        "another",
+        "phase"
+      ]
+    },
+    {
+      "id": 37,
+      "start": 173.5,
+      "end": 180.07,
+      "text": "You gave me one look and now I can't get my mind off of you",
+      "words": [
+        "You",
+        "gave",
+        "me",
+        "one",
+        "look",
+        "and",
+        "now",
+        "I",
+        "can't",
+        "get",
+        "my",
+        "mind",
+        "off",
+        "of",
+        "you"
+      ]
+    },
+    {
+      "id": 38,
+      "start": 180.17,
+      "end": 182.33,
+      "text": "And it's all because",
+      "words": [
+        "And",
+        "it's",
+        "all",
+        "because"
+      ]
+    },
+    {
+      "id": 39,
+      "start": 182.43,
+      "end": 185.66,
+      "text": "I see the galaxies when I look in your eyes",
+      "words": [
+        "I",
+        "see",
+        "the",
+        "galaxies",
+        "when",
+        "I",
+        "look",
+        "in",
+        "your",
+        "eyes"
+      ]
+    },
+    {
+      "id": 40,
+      "start": 185.76,
+      "end": 190.36,
+      "text": "And I, can't speak, no, I, can't speak at all",
+      "words": [
+        "And",
+        "I",
+        "can't",
+        "speak",
+        "no",
+        "I",
+        "can't",
+        "speak",
+        "at",
+        "all"
+      ]
+    },
+    {
+      "id": 41,
+      "start": 190.46,
+      "end": 194.11,
+      "text": "I swear to Zeus, you're Aphrodite in disguise",
+      "words": [
+        "I",
+        "swear",
+        "to",
+        "Zeus",
+        "you're",
+        "Aphrodite",
+        "in",
+        "disguise"
+      ]
+    },
+    {
+      "id": 42,
+      "start": 194.21,
+      "end": 197.69,
+      "text": "Don't think that you could hide it from me",
+      "words": [
+        "Don't",
+        "think",
+        "that",
+        "you",
+        "could",
+        "hide",
+        "it",
+        "from",
+        "me"
+      ]
+    },
+    {
+      "id": 43,
+      "start": 197.79,
+      "end": 201.63,
+      "text": "Oh, no, I never thought I'd get this close to someone so divine",
+      "words": [
+        "Oh",
+        "no",
+        "I",
+        "never",
+        "thought",
+        "I'd",
+        "get",
+        "this",
+        "close",
+        "to",
+        "someone",
+        "so",
+        "divine"
+      ]
+    },
+    {
+      "id": 44,
+      "start": 201.73,
+      "end": 206.92,
+      "text": "Oh, I, can't breathe, no, I, can't breathe at all",
+      "words": [
+        "Oh",
+        "I",
+        "can't",
+        "breathe",
+        "no",
+        "I",
+        "can't",
+        "breathe",
+        "at",
+        "all"
+      ]
+    },
+    {
+      "id": 45,
+      "start": 207.02,
+      "end": 210.17,
+      "text": "Aphrodite, could you, could you please be mine?",
+      "words": [
+        "Aphrodite",
+        "could",
+        "you",
+        "could",
+        "you",
+        "please",
+        "be",
+        "mine"
+      ]
+    },
+    {
+      "id": 46,
+      "start": 210.27,
+      "end": 212.82,
+      "text": "Oh",
+      "words": [
+        "Oh"
+      ]
+    },
+    {
+      "id": 47,
+      "start": 212.92,
+      "end": 214.33,
+      "text": "Could you please be mine?",
+      "words": [
+        "Could",
+        "you",
+        "please",
+        "be",
+        "mine"
+      ]
+    },
+    {
+      "id": 48,
+      "start": 214.43,
+      "end": 221.04,
+      "text": "Oh, mine",
+      "words": [
+        "Oh",
+        "mine"
+      ]
+    },
+    {
+      "id": 49,
+      "start": 221.14,
+      "end": 222.53,
+      "text": "Could you please be mine?",
+      "words": [
+        "Could",
+        "you",
+        "please",
+        "be",
+        "mine"
+      ]
+    },
+    {
+      "id": 50,
+      "start": 222.63,
+      "end": 228.63,
+      "text": "Oh, mine",
+      "words": [
+        "Oh",
+        "mine"
+      ]
+    }
+  ]
+}
